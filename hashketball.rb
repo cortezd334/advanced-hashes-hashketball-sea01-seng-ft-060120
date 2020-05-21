@@ -193,5 +193,16 @@ def player_numbers(team_name)
 end
 
 def player_stats(player_name)
+  stats = {}
+  game_hash.each do |h_or_a, parent_hash|
+    parent_hash.each do |team_info, data|
+      if team_info == :players
+        data.each do |categories|
+          if player_name == game_hash[h_or_a][team_info][:player_name]
+          end
+        end
+      end
+    end
+  end
   
 end
