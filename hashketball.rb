@@ -198,11 +198,25 @@ def player_stats(player_name)
     parent_hash.each do |team_info, data|
       if team_info == :players
         data.each do |categories|
-          if player_name == game_hash[h_or_a][team_info][:player_name]
+          if player_name == categories[:player_name]
+            stats = categories
           end
+        end
+      end
+      #binding.pry
+    end
+  end
+  stats
+end
+
+def big_shoe_rebounds
+  game_hash.each do |h_or_a, parent_hash|
+    parent_hash.each do |team_info, data|
+      if team_info == :players
+        data.max_by do |categories|
+          categories[:shoe]
         end
       end
     end
   end
-  
 end
