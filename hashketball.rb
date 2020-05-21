@@ -214,7 +214,7 @@ def big_shoe_rebounds
     parent_hash.each do |team_info, data|
       if team_info == :players
         data.max_by do |categories|
-          categories[:shoe]
+          return categories[:shoe]
         end
       end
     end
