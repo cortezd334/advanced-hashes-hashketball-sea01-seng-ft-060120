@@ -238,3 +238,19 @@ def big_shoe_rebounds#(player_name)
   #binding.pry
   stats[:rebounds]
 end
+
+def most_points_scored
+  points_scored = 0
+  game_hash.each do |l_or_a, parent_hash|
+    parent_hash.each do|team_info, data|
+      if team_info == :players
+        data.each do |categories|
+          if categories[:points] > points_scored
+            points_scored = categories[:points]
+          end
+        end
+      end
+    end
+  end
+  points scored
+end
