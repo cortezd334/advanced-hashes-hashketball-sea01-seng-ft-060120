@@ -159,11 +159,39 @@ end
 def team_colors(team_name)
   game_hash.each do |h_or_a, parent_hash|
     parent_hash.each do |team_info, data|
-      binding.pry
-      if team_info == :colors && team_name == game_hash[:team_name]
-        return game_hash[:colors][data]
-        
+      if team_name == game_hash[h_or_a][:team_name]
+        return game_hash[h_or_a][:colors]
       end
     end
   end
+end
+
+def team_names
+  teams = []
+  game_hash.collect do |h_or_a, parent_hash|
+    parent_hash.collect do |team_info, data|
+      teams << game_hash[h_or_a][:team_name]
+    end
+  end
+  teams.uniq!
+end
+
+def player_numbers(team_name)
+  jersey_numbers = []
+  game_hash.each do |h_or_a, parent_hash|
+    parent_hash.each do |team_info, data|
+      if team_info == :players
+        data.each do |categories|
+          if team_name == game_hash[h_or_a][:team_name]
+            jersey_numbers << categories[:number]
+          end
+        end
+      end
+    end
+  end
+  jersey_numbers
+end
+
+def player_stats(player_name)
+  
 end
