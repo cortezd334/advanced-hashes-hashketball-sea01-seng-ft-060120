@@ -130,16 +130,13 @@ end
 # Write code here
 def num_points_scored(player_name)
   game_hash.each do |h_or_a, parent_hash|
-    parent_hash.each do |team_info, data|
-      if team_info == :players
-        data.each do |categories|
-          if player_name == categories[:player_name]
-            return categories[:points]
+        parent_hash[:players].each do |player_hash|     #works because you can access the key AND you already know you only want to access :players
+          
+          if player_name == player_hash[:player_name]
+            return player_hash[:points]
           end
         end
       end
-    end
-  end
 end
 
 def shoe_size(player_name)
@@ -218,39 +215,81 @@ def big_shoe_rebounds#(player_name)
         data.each do |categories|
           if categories[:shoe] > biggest_shoe
             biggest_shoe = categories[:shoe]
+            stats = categories    #since you set stats = categories here you no longer need the code below in which you basically did the exact same thing!
           end
         end
       end
     end
   end
   #biggest_shoe
-  game_hash.each do |h_or_a, parent_hash|
-    parent_hash.each do |team_info, data|
-      if team_info == :players
-        data.each do |categories|
-          if biggest_shoe == categories[:shoe]
-          stats = categories
-          end
-        end
-      end
-    end
-  end
+  # game_hash.each do |h_or_a, parent_hash|
+  #   parent_hash.each do |team_info, data|
+  #     if team_info == :players
+  #       data.each do |categories|
+  #         if biggest_shoe == categories[:shoe]
+  #         stats = categories
+  #         end
+  #       end
+  #     end
+  #   end
+  # end
   #binding.pry
   stats[:rebounds]
 end
 
+#BONUS
+
 def most_points_scored
   points_scored = 0
-  game_hash.each do |l_or_a, parent_hash|
+  stats = {}
+  game_hash.each do |h_or_a, parent_hash|
     parent_hash.each do|team_info, data|
-      if team_info == :players
-        data.each do |categories|
-          if categories[:points] > points_scored
-            points_scored = categories[:points]
-          end
+      parent_hash[:players].each do |categories|
+        if categories[:points] > points_scored
+          points_scored = categories[:points]
+          stats = categories    
+          #binding.pry
         end
       end
     end
   end
-  points scored
+  stats[:player_name]
 end
+
+def winning_team
+  home_points = []
+  away_points = []
+  game_hash.each do |h_or_a, parent_hash|
+    if h_or_a == :home
+      parent_hash[:players].each do |categories|
+        home_points << categories[:points]
+      end
+    end
+    if h_or_a == :away
+      parent_hash[:players].each do |categories|
+        away_points << categories[:points]
+      end
+    end
+  end
+  home_points = home_points.sum
+  away_points = away_points.sum
+  if home_points > away_points
+    return game_hash[:home][:team_name]
+  else game_hash[:away][:team_name]
+  end
+end
+
+def player_with_longest_name
+  longest_name = ""
+  game_hash.each do |h_or_a, parent_hash|
+    parent_hash[:players].each do |categories|
+      if categories[:player_name] > longest_name
+        longest_name = categories[:player_name]
+        binding.pry
+      end
+    end
+  end
+  longest_name
+end
+
+player_with_longest_name
